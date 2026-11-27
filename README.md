@@ -11,7 +11,7 @@
 .
 ├── frontend/                 Vue 3 + Vite + TypeScript 前端
 │   ├── src/views/WorkbenchView.vue|tsx  全部模块共享工作台
-│   ├── src/data/modules.ts              18个业务模块配置
+│   ├── src/data/modules.ts              19个业务模块配置
 │   ├── src/api/              统一请求封装
 │   └── vite.config.ts        dev server 配置（open: false）
 ├── backend/                  FastAPI（Python） 后端
@@ -57,6 +57,7 @@ npm run dev
 | 揉捻工序 | `rolling` | 揉捻记录 | 压力档位、揉捻时长、成条率 |
 | 发酵工序 | `fermentation` | 发酵记录 | 环境温度、环境湿度、堆高尺寸 |
 | 干燥工序 | `drying` | 干燥记录 | 起始温度、终止温度、干燥时长 |
+| 复烘处置 | `redrying` | 复烘处置条 | 初烘含水率、复烘实测含水率、交接上限 |
 | 精制分级 | `grading` | 分级结果 | 筛号规格、碎末比例、等级判定 |
 | 拼配配方 | `blending` | 拼配批次 | 原料比例、拼配日期、口感评分 |
 | 包装规格 | `packing` | 包装批 | 包装形式、净含量、标签文案 |

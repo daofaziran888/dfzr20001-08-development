@@ -230,10 +230,30 @@ async function submitCreate() {
   }
 }
 
+// 部分动作需要随动作提交当次数值（如值班员在复烘处置条上提交实测）
+const ACTION_VALUE_FIELDS: Record<string, Record<string, string[]>> = {
+  redrying: {
+    提交实测: ['中心实测', '边缘实测', '复烘实测重量'],
+    补报初烘: ['质检补报含水率'],
+    确认交接: ['中心实测', '边缘实测', '复烘实测重量'],
+    终止复烘: ['中心实测', '边缘实测', '复烘实测重量'],
+  },
+}
+
 async function runAction(action: string, row: EntryRow) {
   errorMessage.value = ''
   try {
-    const result = await applyAction(meta.key, Number(row.id), action)
+    let values: Record<string, string> | undefined
+    const needed = ACTION_VALUE_FIELDS[meta.key]?.[action]
+    if (needed) {
+      values = {}
+      for (const field of needed) {
+        const input = window.prompt(`【${action}】请输入${field}（留空表示本次不提交）`)
+        if (input === null) return
+        if (input.trim()) values[field] = input.trim()
+      }
+    }
+    const result = await applyAction(meta.key, Number(row.id), action, values)
     if (!result.ok) throw new Error(result.message)
     await reload()
   } catch (error) {

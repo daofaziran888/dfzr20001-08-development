@@ -107,6 +107,16 @@ def update_audit_review(
     return {"ok": True, "message": message, "entry": entry}
 
 
+@router.get("/redrying-status/{drying_id}")
+def redrying_tray_status(drying_id: int) -> dict[str, Any]:
+    """班组回看：指定盘（干燥记录）的复烘办理状态与分级是否实际收料。"""
+    from app.services import service_for
+    svc = service_for("redrying")
+    if svc is None:
+        raise HTTPException(status_code=404, detail="复烘处置模块未注册")
+    return {"ok": True, "detail": svc.tray_review(drying_id)}
+
+
 @router.get("/events")
 def list_events(
     module: str | None = Query(default=None),
